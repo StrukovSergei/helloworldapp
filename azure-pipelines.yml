@@ -21,18 +21,12 @@ steps:
     dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)/nupkg
   displayName: 'Pack Solution'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
 - task: UniversalPackages@0
   inputs:
     command: 'publish'
     publishDirectory: '$(Build.ArtifactStagingDirectory)/nupkg'
     feedsToUsePublish: 'internal'
     vstsFeedPublish: '7174cfa7-09ea-46f4-9901-442b93686692/c20bf3e0-1a36-4a2d-9436-0d50ebb6b4cb'
-    vstsFeedPackagePublish: '$(Build.SourceBranch)_$(Build.BuildId)'
+    vstsFeedPackagePublish: 'helloworldapp'
     versionOption: 'patch'
     packagePublishDescription: 'Publishing artifact'
