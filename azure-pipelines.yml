@@ -14,7 +14,7 @@ steps:
     packageType: 'sdk'
     version: '5.0.408'
 
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build /p:Version=$(Build.BuildId) --configuration $(buildConfiguration)
   displayName: 'Build project'
 
 - script: |
