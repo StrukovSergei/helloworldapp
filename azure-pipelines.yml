@@ -23,16 +23,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/nupkg'
+    ArtifactName: 'nuget-packages'
     publishLocation: 'Container'
-
-- task: UniversalPackages@0
-  inputs:
-    command: 'publish'
-    publishDirectory: '$(Build.ArtifactStagingDirectory)/nupkg'
-    feedsToUsePublish: 'internal'
-    vstsFeedPublish: '7174cfa7-09ea-46f4-9901-442b93686692/c20bf3e0-1a36-4a2d-9436-0d50ebb6b4cb'
-    vstsFeedPackagePublish: 'helloworldapp'
-    versionOption: 'patch'
-    packagePublishDescription: 'Publishing artifact'
