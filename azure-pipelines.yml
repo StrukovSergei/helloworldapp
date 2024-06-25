@@ -21,12 +21,19 @@ steps:
     dotnet pack --configuration Release --output $(Build.ArtifactStagingDirectory)/nupkg
   displayName: 'Pack Solution'
 
+# Publish Build Artifacts
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
+# Generate NuGet package from DLL
+- script: |
+    dotnet nuget push "$(Build.ArtifactStagingDirectory)/nupkg/*.nupkg" -k $(NuGetApiKey) -s https://api.nuget.org/v3/index.json
+  displayName: 'Push NuGet Package'
+
+# Publish NuGet Package to Artifacts
 - task: UniversalPackages@0
   inputs:
     command: 'publish'
@@ -36,3 +43,11 @@ steps:
     vstsFeedPackagePublish: 'helloworldapp'
     versionOption: 'patch'
     packagePublishDescription: 'Publishing artifact'
+
+# Tag the artifact with branch name and version
+- script: |
+    branchName=$(Build.SourceBranchName)
+    version=$(Build.BuildId)
+    echo "##vso[build.addbuildtag]$(branchName)_$(version)"
+    echo "Version: $(version)"
+  displayName: 'Tag and Print Version'
